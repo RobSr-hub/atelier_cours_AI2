@@ -1,5 +1,7 @@
 #pragma once
+
 #include "Node.h"
+#include <../Source/Core/Globals.h>
 
 namespace BehaviourTree
 {
@@ -14,6 +16,7 @@ namespace BehaviourTree
 
         NodeState tick() const
         {
+            Core::log("[BehaviourTree] - Tick()");
             if (_rootNode)
                 return _rootNode->tick();
             return NodeState::FAILURE;

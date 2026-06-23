@@ -30,7 +30,7 @@ namespace Core
 
     void GameTest::update()
     {
-        
+        _tree.tick();
     }
 
     void GameTest::render()
