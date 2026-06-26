@@ -1,5 +1,6 @@
 #pragma once
 #include "../../Core/Globals.h"
+#include "Core/BlackBoard.h"
 #include "Core/CompositeNode.h"
 
 namespace BehaviourTree

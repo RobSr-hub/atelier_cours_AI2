@@ -8,7 +8,7 @@ namespace BehaviourTree
     class DummySuccess : public LeafNode
     {
     public:
-        NodeState tick(const BehaviourTree::BlackBoard& bb) override
+        NodeState tick(const BlackBoard& bb) override
         {
             Core::log(" DummySuccess Leaf");
             return NodeState::SUCCESS;
@@ -19,7 +19,7 @@ namespace BehaviourTree
     class DummyFail : public LeafNode
     {
     public:
-        NodeState tick(const BehaviourTree::BlackBoard& bb) override
+        NodeState tick(const BlackBoard& bb) override
         {
             Core::log(" DummyFail Leaf");
             return NodeState::FAILURE;
@@ -29,7 +29,7 @@ namespace BehaviourTree
     class DummyRunning : public LeafNode
     {
     public:
-        NodeState tick(const BehaviourTree::BlackBoard& bb) override
+        NodeState tick(const BlackBoard& bb) override
         {
             Core::log(" DummyRunning Leaf");
             return NodeState::RUNNING;

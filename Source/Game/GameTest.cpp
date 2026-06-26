@@ -2,6 +2,9 @@
 
 #include <raylib.h>
 
+#include "BehaviourTree/Builders.h"
+#include "BehaviourTree/Core/BehaviourTree.h"
+
 namespace Core
 {
     GameTest::GameTest()
@@ -9,11 +12,14 @@ namespace Core
         InitWindow(720, 480, "GameTest");
         SetTargetFPS(30);
 
+        _tree = BehaviourTree::Builders::TestSequence();
         _loop = true;
     }
 
     GameTest::~GameTest()
     {
+        delete _tree;
+        _tree = nullptr;
         CloseWindow();
     }
 
@@ -30,8 +36,8 @@ namespace Core
 
     void GameTest::update()
     {
-        if (!_tree.isComplete())
-            _tree.tick();
+        if (!_tree->isComplete())
+            _tree->tick();
     }
 
     void GameTest::render()

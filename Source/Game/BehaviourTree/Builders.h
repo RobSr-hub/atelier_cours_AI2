@@ -1,10 +1,13 @@
 #pragma once
+#include "Composites.h"
+#include "DummyLeaves.h"
 #include "Core/BehaviourTree.h"
 
 namespace BehaviourTree
 {
     class Builders
     {
+    public:
         // Testing case for the tree, can be replaced with a more complex tree structure
         static BehaviourTree* TestSequence()
         {
@@ -48,7 +51,7 @@ namespace BehaviourTree
             sln->add(new DummyFail());
             sln->add(new DummyFail());
 
-            bt->setRootNode(sn);
+            bt->setRootNode(sqn);
 
             return bt;
         }
