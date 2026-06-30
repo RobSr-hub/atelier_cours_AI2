@@ -73,7 +73,9 @@ namespace BehaviourTree
         static BehaviourTree* TestRunningNode()
         {
             auto bt = new BehaviourTree();
-            auto sn = new DummyRunning();
+            auto sn = new Selector();
+            sn->add(new DummyFail());
+            sn->add(new DummyRunning());
             bt->setRootNode(sn);
 
             return bt;
