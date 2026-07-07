@@ -18,8 +18,10 @@ namespace Game
         bb.set<Actor*>("Player", player);
 
         auto sn = new BehaviourTree::Sequence();
-        sn->add(new Delay(3.0f));
-        sn->add(new MoveActor(1.0f));
+        sn->add(new Delay(1.0f));
+        sn->add(new MoveActor(1.0f, true, false));
+        sn->add(new Delay(2.0f));
+        sn->add(new MoveActor(2.0f, false, true));
         sn->add(new BehaviourTree::DummySuccess());
 
         bt->setRootNode(sn);
