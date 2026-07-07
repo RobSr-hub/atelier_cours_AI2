@@ -14,14 +14,12 @@ namespace Game
     {
         auto bt = new BehaviourTree::BehaviourTree();
 
-        player->setDirection(false, true, false, false);
-
-        auto bb = bt->getBlackBoard();
+        BehaviourTree::BlackBoard &bb = bt->getBlackBoard();
         bb.set<Actor*>("Player", player);
 
         auto sn = new BehaviourTree::Sequence();
-        sn->add(new Delay(5.0f));
-        sn->add(new MoveActor(2.0f));
+        sn->add(new Delay(3.0f));
+        sn->add(new MoveActor(1.0f));
         sn->add(new BehaviourTree::DummySuccess());
 
         bt->setRootNode(sn);
