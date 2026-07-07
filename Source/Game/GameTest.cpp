@@ -2,8 +2,8 @@
 
 #include <raylib.h>
 
+#include "GameBuilders.h"
 #include "BehaviourTree/Builders.h"
-#include "BehaviourTree/Core/BehaviourTree.h"
 
 #include "GameConfig.h"
 
@@ -15,7 +15,7 @@ namespace Game
         InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "GameTest");
         SetTargetFPS(30);
 
-        _tree = Builders::TestDelay();
+        _tree = GameBuilders::TestMovePlayer(&_player);
         _loop = true;
     }
 

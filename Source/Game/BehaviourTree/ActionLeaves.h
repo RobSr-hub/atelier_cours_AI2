@@ -3,12 +3,11 @@
 #include "Core/BlackBoard.h"
 #include "Core/LeafNode.h"
 
-using namespace BehaviourTree;
 using namespace Core;
 
 namespace Game
 {
-    class Repeater : public LeafNode
+    class Repeater : public BehaviourTree::LeafNode
     {
         uint _maxLoop;
         uint _loop = 0;
@@ -18,17 +17,17 @@ namespace Game
             : _maxLoop(maxloop)
         {}
 
-        NodeState tick(BlackBoard& bb) override
+        BehaviourTree::NodeState tick(BehaviourTree::BlackBoard& bb) override
         {
             if (_loop++ < _maxLoop)
-                return NodeState::RUNNING;
+                return BehaviourTree::NodeState::RUNNING;
 
             _loop = 0;
-            return NodeState::SUCCESS;
+            return BehaviourTree::NodeState::SUCCESS;
         }
     };
 
-    class Delay : public LeafNode
+    class Delay : public BehaviourTree::LeafNode
     {
         float _duration;
         float _elapsed = 0.f;
@@ -37,14 +36,14 @@ namespace Game
         Delay(float duration)
             : _duration(duration) { }
 
-        NodeState tick(BlackBoard& bb) override
+        BehaviourTree::NodeState tick(BehaviourTree::BlackBoard& bb) override
         {
             _elapsed += GetFrameTime();
             if (_elapsed < _duration)
-                return NodeState::RUNNING;
+                return BehaviourTree::NodeState::RUNNING;
 
             _elapsed = 0.f;
-            return NodeState::SUCCESS;
+            return BehaviourTree::NodeState::SUCCESS;
         }
     };
 }

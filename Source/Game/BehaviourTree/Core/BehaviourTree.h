@@ -22,6 +22,11 @@ namespace BehaviourTree
             _rootNode = nullptr;
         }
 
+        BlackBoard& getBlackBoard()
+        {
+            return _blackboard;
+        }
+
         void setRootNode(Node* rootNode)
         {
             _rootNode = rootNode;
