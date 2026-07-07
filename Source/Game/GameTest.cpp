@@ -26,6 +26,25 @@ namespace Game
         CloseWindow();
     }
 
+    void GameTest::HandlePlayerDirection()
+    {
+        auto directionPressed = IsKeyDown(KEY_LEFT)
+            || IsKeyDown(KEY_RIGHT)
+            || IsKeyDown(KEY_DOWN)
+            || IsKeyDown(KEY_UP)
+            || IsKeyDown(KEY_SPACE);
+
+        if (directionPressed)
+            _player.setDirection(
+                IsKeyDown(KEY_LEFT),
+                IsKeyDown(KEY_RIGHT),
+                IsKeyDown(KEY_DOWN),
+                (IsKeyDown(KEY_UP) || IsKeyDown(KEY_SPACE))
+            );
+        else
+            _player.resetDirection();
+    }
+
     void GameTest::handleInput()
     {
        // Mouse
@@ -33,21 +52,7 @@ namespace Game
            _player.setPosition(GetMouseX(), GetMouseY());
 
        // Direction pressed
-       auto directionPressed = IsKeyDown(KEY_LEFT)
-           || IsKeyDown(KEY_RIGHT)
-           || IsKeyDown(KEY_DOWN)
-           || IsKeyDown(KEY_UP)
-           || IsKeyDown(KEY_SPACE);
-
-       if (directionPressed)
-           _player.setDirection(
-               IsKeyDown(KEY_LEFT),
-               IsKeyDown(KEY_RIGHT),
-               IsKeyDown(KEY_DOWN),
-               (IsKeyDown(KEY_UP) || IsKeyDown(KEY_SPACE))
-           );
-       else
-           _player.resetDirection();
+       //HandlePlayerDirection();
 
        int key = GetKeyPressed();
        switch (key)

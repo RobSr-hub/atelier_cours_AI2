@@ -17,6 +17,7 @@ namespace Game
     public:
         GameTest();
         ~GameTest() override;
+        void HandlePlayerDirection();
 
         void handleInput() override;
         void update() override;
