@@ -12,6 +12,7 @@ namespace Core
         virtual ~Actor() = default;
 
         virtual void init(double x, double y);
+        void move();
 
         virtual void update();
 
