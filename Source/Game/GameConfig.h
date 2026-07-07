@@ -10,7 +10,7 @@ namespace Game
     static const int SCREEN_HEIGHT = 480;
     static const uint FPS = 30;
 
-    static const uint SPEED_LIMIT = 350;
+    static const uint SPEED_LIMIT = 50;
 
     static const double PLAYER_WIDTH          = 70;
     static const double PLAYER_HEIGHT         = 50;
