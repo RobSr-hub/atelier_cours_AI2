@@ -30,6 +30,7 @@ namespace BehaviourTree
     class Selector : public CompositeNode
     {
         uint _currentIndex = 0;
+
     public:
         NodeState tick(BlackBoard& bb) override
         {
@@ -46,6 +47,29 @@ namespace BehaviourTree
                     return state;
             }
             return NodeState::FAILURE;
+        }
+    };
+
+    class Parallel : public CompositeNode
+    {
+    public:
+        NodeState tick(BlackBoard& bb) override
+        {
+            int successCount = 0;
+            for (auto node : _nodes)
+            {
+                auto status = node->tick(bb);
+                if (status == NodeState::FAILURE)
+                    return NodeState::FAILURE;
+
+                if (status == NodeState::SUCCESS)
+                    ++successCount;
+            }
+
+            if (successCount == _nodes.size())
+                return NodeState::SUCCESS;
+
+            return NodeState::RUNNING;
         }
     };
 }

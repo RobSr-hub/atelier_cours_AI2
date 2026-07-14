@@ -15,7 +15,8 @@ namespace Game
         InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "GameTest");
         SetTargetFPS(30);
 
-        _tree = GameBuilders::TestMovePlayer(&_player);
+        //_tree = GameBuilders::TestMovePlayerToLimit(&_player);
+        _tree = BehaviourTree::Builders::TestParallel();
         _loop = true;
     }
 

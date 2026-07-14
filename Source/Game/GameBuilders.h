@@ -13,5 +13,6 @@ namespace Game
     {
     public:
         static BehaviourTree::BehaviourTree* TestMovePlayer(Player* player);
+        static BehaviourTree::BehaviourTree* TestMovePlayerToLimit(Player* player);
     };
 }
