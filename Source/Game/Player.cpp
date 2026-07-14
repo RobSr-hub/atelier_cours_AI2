@@ -86,6 +86,12 @@ namespace Game
         }
     }
 
+    void Player::drawHealth(double x, double y) const
+    {
+        auto text = TextFormat("HP: %d", _health);
+        DrawText(text, x, y, 10, RED);
+    }
+
     void Player::setPosition(double x, double y)
     {
         _x = x;
@@ -147,6 +153,9 @@ namespace Game
         // Head
         DrawRectangleRec(r, c1);
 
+        // Head
+        drawHealth(_x, _y - _h);
+
         Color c2{0, 0, 0, 255};
 
         int offset = 0;
@@ -177,5 +186,10 @@ namespace Game
     void Player::collide(Actor&)
     {
         log("test Player::collide");
+    }
+
+    void Player::setHealth(int health)
+    {
+        _health = health;
     }
 }
