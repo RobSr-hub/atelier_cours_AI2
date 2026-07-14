@@ -113,5 +113,25 @@ namespace BehaviourTree
 
             return bt;
         }
+
+        static BehaviourTree* TestParallel()
+        {
+            auto bt = new BehaviourTree();
+
+            auto pn = new Parallel();
+
+            pn->add(new DummyRunning());
+            pn->add(new DummySuccess());
+
+            auto sn = new Sequence();
+            // Not good Delay is a class from game code
+            sn->add(new Game::Delay(3.0f));
+            sn->add(new DummyFail);
+            pn->add(sn);
+
+            bt->setRootNode(pn);
+
+            return bt;
+        }
     };
 }
