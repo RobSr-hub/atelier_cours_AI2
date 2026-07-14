@@ -101,12 +101,29 @@ namespace Game
         log("[setDirection] Player::setDirection");
     }
 
+    void Player::setDirection(Inputs inputs)
+    {
+        _inputs = inputs;
+        log("[setDirection] Player::setDirection with inputs");
+    }
+
     void Player::resetDirection()
     {
         _inputs.left = false;
         _inputs.right = false;
         _inputs.down = false;
         _inputs.jump = false;
+    }
+
+    bool Player::reachPosition(float x)
+    {
+        const float Epsilon = 0.0001f;
+        auto distance = std::abs(_x - x);
+        if (distance < Epsilon)
+            return true;
+
+        // TODO: check vertical limit if needed
+        return false;
     }
 
     void Player::render() const

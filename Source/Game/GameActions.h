@@ -19,7 +19,9 @@ namespace Game
 
     public:
         MoveActor(float duration)
-            : _duration(duration) {}
+            : _duration(duration)
+        {
+        }
 
         BehaviourTree::NodeState tick(BehaviourTree::BlackBoard& bb) override
         {
@@ -46,6 +48,63 @@ namespace Game
             player->resetDirection();
             _elapsed = 0.f;
             return BehaviourTree::NodeState::SUCCESS;
+        }
+    };
+
+    class SetDirection : public BehaviourTree::LeafNode
+    {
+        Inputs _inputs;
+
+    public:
+        SetDirection(bool l, bool r, bool d, bool j)
+        {
+            _inputs.left = l;
+            _inputs.right = r;
+            _inputs.down = d;
+            _inputs.jump = j;
+        }
+
+        BehaviourTree::NodeState tick(BehaviourTree::BlackBoard& bb) override
+        {
+            // On récupère l'acteur du blackboard 
+            auto actor = bb.get<Actor*>("Player", nullptr);
+            if (!actor)
+                return BehaviourTree::NodeState::FAILURE;
+
+            // On cast l'acteur en Player
+            // TODO: pas la meilleur solution, mais pour l'instant ça fera l'affaire
+            auto player = static_cast<Player*>(actor);
+            player->setDirection(_inputs);
+
+            return BehaviourTree::NodeState::SUCCESS;
+        }
+    };
+
+    class ReachActorTarget : public BehaviourTree::LeafNode
+    {
+        float _target;
+
+    public:
+        ReachActorTarget(float target)
+            : _target{target}
+        {
+        }
+
+        BehaviourTree::NodeState tick(BehaviourTree::BlackBoard& bb) override
+        {
+            // On récupère l'acteur du blackboard 
+            auto actor = bb.get<Actor*>("Player", nullptr);
+            if (!actor)
+                return BehaviourTree::NodeState::FAILURE;
+
+            // On cast l'acteur en Player
+            // TODO: pas la meilleur solution, mais pour l'instant ça fera l'affaire
+            auto player = static_cast<Player*>(actor);
+            if (player->reachPosition(_target))
+                return BehaviourTree::NodeState::SUCCESS;
+
+            player->move();
+            return BehaviourTree::NodeState::RUNNING;
         }
     };
 }

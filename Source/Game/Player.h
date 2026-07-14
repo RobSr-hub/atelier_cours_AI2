@@ -6,6 +6,14 @@ using namespace Core;
 
 namespace Game
 {
+    struct Inputs
+    {
+        bool left;
+        bool right;
+        bool down;
+        bool jump;
+    };
+
     class Player : public Actor
     {
     public:
@@ -18,17 +26,12 @@ namespace Game
 
         void setPosition(double x, double y);
         void setDirection(bool l, bool r, bool d, bool j);
+        void setDirection(Inputs inputs);
         void resetDirection();
+        bool reachPosition(float x);
 
     private:
-        struct Inputs
-        {
-            bool left;
-            bool right;
-            bool down;
-            bool jump;
-        } _inputs;
-
+        Inputs _inputs;
         bool _isJumping;
     };
 }

@@ -19,9 +19,9 @@ int main()
     // TODO: breakdown
     // - ETQ developpeur, je veux pouvoir créer un arbre de comportement pour mon jeu
     //  - task 1 : creer une classe abstraite "Node" qui sera la base de tous les noeuds de l'arbre de comportement --> OK 
-    //  - task 2 : creer une classe "CompositeNode" qui sera la base de tous les noeuds composites (Sequence, Selector, etc.)
-    //  - task 3 : creer une classe "LeafNode" qui sera la base de tous les noeuds feuilles (Action, Condition, etc.)
-    //  - task 4 : creer une classe "BehaviorTree" qui sera la base de l'arbre de comportement
+    //  - task 2 : creer une classe "CompositeNode" qui sera la base de tous les noeuds composites (Sequence, Selector, etc.) --> OK
+    //  - task 3 : creer une classe "LeafNode" qui sera la base de tous les noeuds feuilles (Action, Condition, etc.) --> OK
+    //  - task 4 : creer une classe "BehaviourTree" qui sera la base de l'arbre de comportement --> OK
     //  - task 5 : creer une classe "Sequence" qui sera un noeud composite qui execute ses enfants dans l'ordre jusqu'à ce qu'un enfant échoue
     //  - task 6 : creer une classe "Selector" qui sera un noeud composite qui execute ses enfants dans l'ordre jusqu'à ce qu'un enfant réussisse
     // - ETQ  developpeur, je veux pouvoir rajouter des noeuds à mon arbre de comportement
