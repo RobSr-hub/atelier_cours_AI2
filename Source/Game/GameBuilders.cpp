@@ -9,6 +9,7 @@
 #include "Raven_Scene.h"
 #include "BehaviourTree/ActionLeaves.h"
 #include "BehaviourTree/Composites.h"
+#include "BehaviourTree/Decorators.h"
 #include "BehaviourTree/DummyLeaves.h"
 #include "BehaviourTree/Core/BehaviourTree.h"
 
@@ -78,7 +79,9 @@ namespace Game
         for (auto way_point : wayPoints)
             sequence->add(new MoveBotTo(bot, way_point));
 
-        bt->setRootNode(sequence);
+        BehaviourTree::Node* repeater = new BehaviourTree::Repeater(sequence, 1);
+
+        bt->setRootNode(repeater);
         return bt;
     }
 }
