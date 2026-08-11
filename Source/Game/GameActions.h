@@ -19,11 +19,20 @@ namespace Game
     {
         float _duration;
         float _elapsed = 0.f;
+        Inputs _inputs;
 
     public:
         MoveActor(float duration)
             : _duration(duration)
         {
+            _inputs.right = true;
+        }
+
+        MoveActor(float duration, bool l, bool r)
+            : _duration(duration)
+        {
+            _inputs.left = l;
+            _inputs.right = r;
         }
 
         BehaviourTree::NodeState tick(BehaviourTree::BlackBoard& bb) override
@@ -36,7 +45,7 @@ namespace Game
             // On cast l'acteur en Player
             // TODO: pas la meilleur solution, mais pour l'instant ça fera l'affaire
             auto player = static_cast<Player*>(actor);
-            player->setDirection(false, true, false, false);
+            player->setDirection(_inputs);
 
             // On déplace le joueur pendant la durée spécifiée
             Core::log("Start MoveActor");
@@ -133,6 +142,7 @@ namespace Game
             _bot->GetSteering()->ArriveOn();
             _bot->GetSteering()->SetTarget(_target);
             _bot->UpdateMovement();
+            _bot->RotateFacingTowardPosition(_bot->Pos() + _bot->Heading());
             return BehaviourTree::NodeState::RUNNING;
         }
     };

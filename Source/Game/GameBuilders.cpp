@@ -79,7 +79,7 @@ namespace Game
         for (auto way_point : wayPoints)
             sequence->add(new MoveBotTo(bot, way_point));
 
-        BehaviourTree::Node* repeater = new BehaviourTree::Repeater(sequence, 1);
+        BehaviourTree::Node* repeater = new BehaviourTree::Repeater(sequence, 0);
 
         bt->setRootNode(repeater);
         return bt;
