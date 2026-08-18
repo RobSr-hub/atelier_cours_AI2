@@ -139,6 +139,8 @@ namespace Game
                 return BehaviourTree::NodeState::SUCCESS;
             }
 
+            bb.set<Vector2D>("CurrentTarget", _target);
+
             _bot->GetSteering()->ArriveOn();
             _bot->GetSteering()->SetTarget(_target);
             _bot->UpdateMovement();
@@ -162,6 +164,8 @@ namespace Game
         {
             _bot->GetSteering()->ArriveOn();
             _bot->GetSteering()->SetTarget(_target->Pos());
+
+            bb.set<Vector2D>("CurrentTarget", _target->Pos());
 
             _bot->UpdateMovement();
             _bot->RotateFacingTowardPosition(_bot->Pos() + _bot->Heading());
