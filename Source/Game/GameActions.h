@@ -145,7 +145,6 @@ namespace Game
 
             _bot->GetSteering()->ArriveOn();
             _bot->GetSteering()->SetTarget(_target);
-            _bot->UpdateMovement();
             _bot->RotateFacingTowardPosition(_bot->Pos() + _bot->Heading());
             return BehaviourTree::NodeState::RUNNING;
         }
@@ -169,7 +168,6 @@ namespace Game
 
             bb.set<Vector2D>("CurrentTarget", _target->Pos());
 
-            _bot->UpdateMovement();
             _bot->RotateFacingTowardPosition(_bot->Pos() + _bot->Heading());
             return BehaviourTree::NodeState::RUNNING;
         }
