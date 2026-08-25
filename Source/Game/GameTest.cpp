@@ -1,5 +1,6 @@
 #include "GameTest.h"
 
+#include <Code_Utilities_Light_v2.h>
 #include <raylib.h>
 
 #include "GameActions.h"
@@ -10,6 +11,7 @@
 #include "PlayerBot.h"
 #include "Raven_Map.h"
 #include "Raven_Scene.h"
+#include "Graph/HandyGraphFunctions.h"
 
 namespace Game
 {
@@ -17,20 +19,49 @@ namespace Game
     {
         InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "GameTest");
         SetTargetFPS(30);
+        BdB::srandInt(static_cast<int>(time(nullptr)));
 
         _scene = new Raven_Scene();
         _scene->LoadMap("maps/blank400x400.map");
 
         _bot = _scene->GetAllBots().front();
-        _bot->Spawn(Vector2D(margin, margin));
         _bot->SetMaxSpeed(2.0);
 
         const auto mapWidth = _scene->GetMap()->GetSizeX();
         const auto mapHeight = _scene->GetMap()->GetSizeY();
 
+        const auto NumCellsX = 10;
+        const auto NumCellsY = 10;
+
+        _graph = new SparseGraph<NavGraphNode<>, NavGraphEdge>(true);
+        GraphHelper_CreateGrid(*_graph, mapWidth, mapHeight, NumCellsX, NumCellsY);
+
         _player = new PlayerBot(*_scene, Vector2D(mapWidth * 0.5, mapHeight * 0.5));
 
-        _tree = GameBuilders::TestTargetDetection(_scene);
+        // on recupére 2 noeuds aléatoires du graph
+        auto nodeCount = _graph->NumNodes();
+        auto startPoint = RandInt(0, nodeCount);
+        auto endPoint = RandInt(0, nodeCount);
+        _targetPoints.push_back(_graph->GetNode(startPoint).Pos());
+        _targetPoints.push_back(_graph->GetNode(endPoint).Pos());
+
+        // Le bot doit être spawné sur le startNode noeud du graph
+        auto botStart = _graph->GetNode(startPoint).Pos();
+        _bot->Spawn(botStart);
+
+        // on calcule le chemin entre les 2 noeuds du graph (start -> end)
+        Graph_SearchAStar<NavMeshGraph, Heuristic_Euclid> pathSearchStart(*_graph, startPoint, endPoint);
+        auto pathNodes = pathSearchStart.GetPathToTarget();
+        for (const auto node : pathNodes)
+            _wayPoints.push_back(_graph->GetNode(node).Pos());
+
+        // on calcule le chemin entre les 2 noeuds du graph (start -> end)
+        Graph_SearchAStar<NavMeshGraph, Heuristic_Euclid> pathReturnSearch(*_graph, endPoint, startPoint);
+        auto pathNodesReturn = pathReturnSearch.GetPathToTarget();
+        for (const auto node : pathNodesReturn)
+            _wayPoints.push_back(_graph->GetNode(node).Pos());
+
+        _tree = GameBuilders::TestTargetDetection(_scene, _wayPoints);
 
         _loop = true;
     }
@@ -45,6 +76,9 @@ namespace Game
 
         delete _player;
         _player = nullptr;
+
+        delete _graph;
+        _graph = nullptr;
         CloseWindow();
     }
 
@@ -99,8 +133,37 @@ namespace Game
         BeginDrawing();
         {
             ClearBackground(BLANK);
+
+            GraphHelper_DrawUsingGDI(*_graph, GraphicsContext::grey);
+
+            // display path
+            gfx.BluePen();
+            gfx.BlueBrush();
+            for (size_t i = 0; i < _wayPoints.size(); ++i)
+                gfx.Circle(_wayPoints[i], 3);
+
+            // display target
+            gfx.RedPen();
+            gfx.RedBrush();
+            for (size_t i = 0; i < _targetPoints.size(); ++i)
+            {
+                gfx.Circle(_targetPoints[i], 6);
+                gfx.TextColor(GraphicsContext::red);
+                gfx.TextAtPos(_targetPoints[i] + Vector2D(8, -8), std::to_string(i + 1));
+            }
+
+            auto& bb = _tree->getBlackBoard();
+
+            auto target = bb.get<Vector2D>("CurrentTarget", {});
+            if (target != Vector2D())
+            {
+                gfx.TextColor(GraphicsContext::green);
+                gfx.TextAtPos(target + Vector2D(8, -8), "Target");
+            }
+
             _player->render();
             _scene->Render();
+
             if (_gameComplete)
                 DrawGameComplete();
             DrawFPS(20, 20);

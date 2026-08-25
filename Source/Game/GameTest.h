@@ -1,8 +1,13 @@
 #pragma once
 
-#include "Player.h"
+#include <vector>
+
+#include "GraphNodeTypes.h"
+#include "SparseGraph.h"
+#include "Vector2D.h"
 #include "../Core/GameBase.h"
 
+class NavGraphEdge;
 class Raven_Scene;
 class Raven_Bot;
 
@@ -15,12 +20,17 @@ namespace Game
 {
     class PlayerBot;
 
-    class GameTest : public GameBase
+    using NavMeshGraph = SparseGraph<NavGraphNode<>, NavGraphEdge>;
+
+    class GameTest : public Core::GameBase
     {
         BehaviourTree::BehaviourTree* _tree;
         PlayerBot* _player;
         Raven_Bot* _bot;
         Raven_Scene* _scene;
+        std::vector<Vector2D> _targetPoints;
+        std::vector<Vector2D> _wayPoints;
+        NavMeshGraph* _graph;
 
         bool _gameComplete = false;
     public:
