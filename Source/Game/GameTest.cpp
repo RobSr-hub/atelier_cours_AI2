@@ -13,6 +13,8 @@
 #include "Raven_Scene.h"
 #include "Graph/HandyGraphFunctions.h"
 
+using namespace Graphics;
+
 namespace Game
 {
     GameTest::GameTest()
@@ -36,7 +38,7 @@ namespace Game
         _graph = new SparseGraph<NavGraphNode<>, NavGraphEdge>(true);
         GraphHelper_CreateGrid(*_graph, mapWidth, mapHeight, NumCellsX, NumCellsY);
 
-        _player = new PlayerBot(*_scene, Vector2D(mapWidth * 0.5, mapHeight * 0.5));
+        _player = new PlayerBot(_scene, Vector2D(mapWidth * 0.5, mapHeight * 0.5));
 
         // on recupére 2 noeuds aléatoires du graph
         auto nodeCount = _graph->NumNodes();
@@ -79,30 +81,8 @@ namespace Game
         CloseWindow();
     }
 
-    void GameTest::HandlePlayerDirection()
-    {
-        auto directionPressed = IsKeyDown(KEY_LEFT)
-            || IsKeyDown(KEY_RIGHT)
-            || IsKeyDown(KEY_DOWN)
-            || IsKeyDown(KEY_UP)
-            || IsKeyDown(KEY_SPACE);
-
-        /*if (directionPressed)
-            _player.setDirection(
-                IsKeyDown(KEY_LEFT),
-                IsKeyDown(KEY_RIGHT),
-                IsKeyDown(KEY_DOWN),
-                (IsKeyDown(KEY_UP) || IsKeyDown(KEY_SPACE))
-            );
-        else
-            _player.resetDirection();*/
-    }
-
     void GameTest::handleInput()
     {
-        // Direction pressed
-        _player->HandleInput();
-
         _loop = !WindowShouldClose();
     }
 
@@ -115,9 +95,6 @@ namespace Game
 
         if (_bot->GetBrain()->isComplete())
             _gameComplete = true;
-
-        // Physics
-        _player->Update();
     }
 
     void GameTest::DrawGameComplete()
@@ -127,9 +104,9 @@ namespace Game
 
     void GameTest::render()
     {
-        BeginDrawing();
+        gfx.StartDrawing();
         {
-            ClearBackground(BLANK);
+            gfx.ClearBackground(GfxWhite);
 
             GraphHelper_DrawUsingGDI(*_graph, GraphicsContext::grey);
 
@@ -144,7 +121,7 @@ namespace Game
             gfx.RedBrush();
             for (size_t i = 0; i < _targetPoints.size(); ++i)
             {
-                gfx.Circle(_targetPoints[i], 6);
+                gfx.Circle(_targetPoints[i], 3);
                 gfx.TextColor(GraphicsContext::red);
                 gfx.TextAtPos(_targetPoints[i] + Vector2D(8, -8), std::to_string(i + 1));
             }
@@ -163,8 +140,7 @@ namespace Game
 
             if (_gameComplete)
                 DrawGameComplete();
-            DrawFPS(20, 20);
         }
-        EndDrawing();
+        gfx.StopDrawing();
     }
 }

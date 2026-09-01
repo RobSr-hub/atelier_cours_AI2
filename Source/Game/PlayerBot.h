@@ -1,7 +1,8 @@
 #pragma once
-#include "Common/2D/Vector2D.h"
+#include "Graphics/2D/Vector2D.h"
 
 using namespace Common;
+using namespace Graphics;
 
 namespace Raven
 {
@@ -14,9 +15,7 @@ namespace Game
     class PlayerBot
     {
     public:
-        PlayerBot(Raven::Raven_Scene& scene, const Vector2D);
-        void HandleInput();
-        void Update();
+        PlayerBot(Raven::Raven_Scene* bot, const Vector2D& startPos);
         void render();
     private:
         Raven::Raven_Bot* _bot;
