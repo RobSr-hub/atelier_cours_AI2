@@ -186,6 +186,11 @@ namespace Game
             }
             return BehaviourTree::NodeState::RUNNING;
         }
+
+        void onReset() override
+        {
+            _requestSent = false;
+        }
     };
 
     // Move bot to a specific destination through a navmesh path
@@ -241,6 +246,11 @@ namespace Game
                 _path.pop_front();
 
             return BehaviourTree::NodeState::RUNNING;
+        }
+
+        void onReset() override
+        {
+            _pathRetrieved = false;
         }
     };
 
